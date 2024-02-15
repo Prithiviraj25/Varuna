@@ -29,7 +29,7 @@ class _RealTimeChartState extends State<RealTimeChart> {
     for (var key in [
       "pH",
       "Hardness",
-      "Solids",
+      "Solids(by 100)",
       "Chloramines",
       "Sulfate",
       "Conductivity",
@@ -77,6 +77,7 @@ class _RealTimeChartState extends State<RealTimeChart> {
                       child: charts.BarChart(
                         _createChartData(),
                         animate: true,
+
                           // layoutConfig: charts.LayoutConfig(
                           //   topMarginSpec: charts.MarginSpec.fixedPixel(10),
                           //   rightMarginSpec: charts.MarginSpec.fixedPixel(20),
