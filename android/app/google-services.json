@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "702144630983",
+    "project_id": "varuna-ed693",
+    "storage_bucket": "varuna-ed693.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:702144630983:android:bf35db6fcd44ad158b2ee2",
+        "android_client_info": {
+          "package_name": "com.example.varuna"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4_HcX7LuXeq2ERot6BsnJJMg5BNSBtFE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
