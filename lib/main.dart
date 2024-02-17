@@ -3,8 +3,10 @@ import 'package:varuna/Chart_page.dart';
 import 'package:varuna/Splash_Screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:varuna/Chatbot.dart';
-
+import 'package:tflite_flutter/tflite_flutter.dart';
+import 'package:firebase_ml_model_downloader/firebase_ml_model_downloader.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,10 +14,17 @@ void main() async {
       options: FirebaseOptions(
           databaseURL: "https://varuna-ed693-default-rtdb.firebaseio.com",
           apiKey: "AIzaSyB4_HcX7LuXeq2ERot6BsnJJMg5BNSBtFE",
-          appId: "varuna-ed693",
+          appId: "1:702144630983:android:bf35db6fcd44ad158b2ee2",
           messagingSenderId: "702144630983",
           projectId: "varuna-ed693"));
   runApp(MyApp());
+}
+
+class SensorData {
+  final String name;
+  final double value;
+
+  SensorData(this.name, this.value);
 }
 
 class MyApp extends StatelessWidget {
@@ -42,6 +51,89 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final databaseReference = FirebaseDatabase.instance.reference();
+  List<SensorData> chartData = [];
+  var output = [];
+  var localModelPath;
+  @override
+  void initState() {
+    super.initState();
+    _startListeningToFirebase();
+    m_load();
+  }
+
+  void _startListeningToFirebase() {
+    print("running value set");
+    for (var key in [
+      "pH",
+      "Hardness",
+      "Solids(by 100)",
+      "Chloramines",
+      "Sulfate",
+      "Conductivity",
+      "Organic Carbons",
+      "Tri-halomethanes",
+      "Turbidity"
+    ]) {
+      databaseReference.child('sensordata').child(key).onValue.listen((event) {
+        dynamic data = event.snapshot.value;
+        // List<SensorData> newChartData = [];
+        if (data != null) {
+          setState(() {
+            chartData.add(SensorData(key, double.parse(data.toString())));
+          });
+        }
+      });
+    }
+  }
+
+  //----------------------------
+  void m_load() async {
+    await FirebaseModelDownloader.instance
+        .getModel(
+      "Potablilty-Detector",
+      FirebaseModelDownloadType.localModel,
+    )
+        .then((customModel) async {
+      localModelPath = customModel.file;
+      final interpreter = await Interpreter.fromFile(localModelPath);
+      final outputShape = interpreter.getOutputTensor(0).shape;
+      final outputSize = outputShape.reduce((a, b) => a * b);
+      setState(() {
+        _startListeningToFirebase();
+         // Initialize with zeros
+        if (chartData.isNotEmpty) {
+          List input=[];
+          int count=0;
+          for (var key in [
+            "pH",
+            "Hardness",
+            "Solids(by 100)",
+            "Chloramines",
+            "Sulfate",
+            "Conductivity",
+            "Organic Carbons",
+            "Tri-halomethanes",
+            "Turbidity"
+          ]){if(key=="Solids(by 100)")
+            input.add((chartData[count].value)*100);
+            else
+            input.add((chartData[count].value));
+            count++;
+          }
+          this.output = List<int>.filled(outputSize, 0);
+            // Check if chartData is not empty
+          interpreter.run(input, output[0]);
+
+        } else {
+          m_load();
+        }
+
+      });
+    });
+  }
+
+  //-----------------------------------
   var Device_names = ["DEVICE1", "DEVICE2", "chatbot"];
   @override
   Widget build(BuildContext context) {
@@ -72,7 +164,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         textStyle: TextStyle(color: Color(0xDD000000)),
                         fontWeight: FontWeight.w600)),
                 subtitle: Text(
-                    (Device_names[index] != "chatbot") ? ("0000") : (""),
+                    (Device_names[index] != "chatbot"&&(output[0]==0)) ?("NOT POTABLE"):(Device_names[index] != "chatbot"&&(output[0]==1)?("POTABLE"):("")),
                     style: GoogleFonts.roboto(
                         textStyle: TextStyle(color: Color(0xDD000000)),
                         fontWeight: FontWeight.w600)),
