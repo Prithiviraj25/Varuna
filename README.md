@@ -24,13 +24,21 @@ load in your mobile using android studio or vs code.
 2.) download the code from arduino file and load in the device.
 
 
-
-
+3.) Then run the arduino system and then you can see the real time values updated in the data base.
 
 ## Disclaimer 
 
 Since the sensors are available for the time being 
 you can however use the testing data base which is being provided by us 
 
-testing database :-
+testing database link : https://varuna-ed693-default-rtdb.firebaseio.com/
+
+you can update the values in the above database and see the working of our application.
+
+if you have the sensors ready then you may have to change the arduino code file's contents.
+You have to change the firebase host to above testing base link and firebase auth to "AIzaSyB4_HcX7LuXeq2ERot6BsnJJMg5BNSBtFE."
+
+## Application screenshots.
+
+
 
