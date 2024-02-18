@@ -19,6 +19,8 @@ load in your mobile using android studio or vs code.
 ## Setting up the sensor device 
 
 1.) To setup the sensor device use the  circuit diagram.
+![My Image Description](assets/img.jpeg)
+
 
 
 2.) download the code from arduino file and load in the device.
