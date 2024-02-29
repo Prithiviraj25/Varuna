@@ -101,10 +101,10 @@ class _MyHomePageState extends State<MyHomePage> {
       final outputSize = outputShape.reduce((a, b) => a * b);
       setState(() {
         _startListeningToFirebase();
-         // Initialize with zeros
+        // Initialize with zeros
         if (chartData.isNotEmpty) {
-          List input=[];
-          int count=0;
+          List input = [];
+          int count = 0;
           for (var key in [
             "pH",
             "Hardness",
@@ -115,82 +115,137 @@ class _MyHomePageState extends State<MyHomePage> {
             "Organic Carbons",
             "Tri-halomethanes",
             "Turbidity"
-          ]){if(key=="Solids(by 100)")
-            input.add((chartData[count].value)*100);
+          ]) {
+            if (key == "Solids(by 100)")
+              input.add((chartData[count].value) * 100);
             else
-            input.add((chartData[count].value));
+              input.add((chartData[count].value));
             count++;
           }
           this.output = List<int>.filled(outputSize, 0);
-            // Check if chartData is not empty
+          // Check if chartData is not empty
           interpreter.run(input, output[0]);
-
         } else {
           m_load();
         }
-
       });
     });
   }
 
   //-----------------------------------
-  var Device_names = ["DEVICE1", "DEVICE2", "chatbot"];
+  var Device_names = ["DEVICE1", "DEVICE2"];
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    var size = MediaQuery.of(context).size;
+    return SafeArea(
+        child: Scaffold(
       backgroundColor: Color(0xFFE4F1FF),
       appBar: AppBar(
-          backgroundColor: Color(0xFFBBDEFB),
-          title: Text("USERS SCREEN",
-              style: GoogleFonts.roboto(
-                  textStyle: TextStyle(color: Color(0xDD000000)),
-                  fontWeight: FontWeight.w800))),
-      body: Container(
-        child: ListView.separated(
-            itemBuilder: (context, index) {
-              return ListTile(
-                leading: CircleAvatar(
-                  child: Text(
-                    "${index + 1}",
-                    style: GoogleFonts.roboto(
-                        textStyle: TextStyle(
-                            color: Color(0xDD000000),
-                            fontWeight: FontWeight.w600)),
-                  ),
-                  backgroundColor: Color(0xFF0277bd),
-                ),
-                title: Text(Device_names[index],
-                    style: GoogleFonts.roboto(
-                        textStyle: TextStyle(color: Color(0xDD000000)),
-                        fontWeight: FontWeight.w600)),
-                subtitle: Text(
-                    (Device_names[index] != "chatbot"&&(output[0]==0)) ?("NOT POTABLE"):(Device_names[index] != "chatbot"&&(output[0]==1)?("POTABLE"):("")),
-                    style: GoogleFonts.roboto(
-                        textStyle: TextStyle(color: Color(0xDD000000)),
-                        fontWeight: FontWeight.w600)),
-                trailing: InkWell(
-                    onTap: () async {
-                      if (Device_names[index] != "chatbot") {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => RealTimeChart()));
-                      } else {
-                        await Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Chatbot()));
-                      }
-                    },
-                    child: Icon(Icons.arrow_back)),
-              );
-            },
-            itemCount: Device_names.length,
-            separatorBuilder: (context, index) {
-              return Divider(
-                height: 20,
-                thickness: 1,
-              );
-            }),
+        backgroundColor: Color(0xFFBBDEFB),
+        automaticallyImplyLeading: false,
+        title: Center(
+            child: Text("USERS SCREEN",
+                style: GoogleFonts.breeSerif(
+                    textStyle: TextStyle(
+                        color: Color(0xDD000000),
+                        fontWeight: FontWeight.w800)))),
       ),
-    );
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: size.width,
+                child: OutlinedButton.icon(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => RealTimeChart()));
+                  },
+                  style: OutlinedButton.styleFrom(
+                    backgroundColor: Color(0xFFBBDEFB),
+                  ),
+                  icon: Icon(
+                    Icons.device_hub_outlined,
+                    color: Colors.black87,
+                  ),
+                  label: Text(
+                    Device_names[0],
+                    style: GoogleFonts.breeSerif(
+                        textStyle:
+                            TextStyle(fontSize: 15, color: Colors.black87)),
+                  ),
+                ),
+              ),
+              Text(
+                (output[0] == 0) ? "NOT POTABLE" : "POTABLE",
+                style: GoogleFonts.breeSerif(
+                    textStyle: TextStyle(fontSize: 15, color: Colors.red)),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              SizedBox(
+                width: size.width,
+                child: OutlinedButton.icon(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => RealTimeChart()));
+                  },
+                  style: OutlinedButton.styleFrom(
+                    backgroundColor: Color(0xFFBBDEFB),
+                  ),
+                  icon: Icon(
+                    Icons.device_hub_outlined,
+                    color: Colors.black87,
+                  ),
+                  label: Text(
+                    Device_names[1],
+                    style: GoogleFonts.breeSerif(
+                        textStyle:
+                            TextStyle(fontSize: 15, color: Colors.black87)),
+                  ),
+                ),
+              ),
+              Text(
+                (output[0] == 0) ? "NOT POTABLE" : "POTABLE",
+                style: GoogleFonts.breeSerif(
+                    textStyle: TextStyle(fontSize: 15, color: Colors.red)),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              SizedBox(
+                width: size.width,
+                child: OutlinedButton.icon(
+                  onPressed: () async {
+                    await Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Chatbot()));
+                  },
+                  style: OutlinedButton.styleFrom(
+                    backgroundColor: Color(0xFFBBDEFB),
+                  ),
+                  icon: Icon(
+                    Icons.computer_rounded,
+                    color: Colors.black87,
+                  ),
+                  label: Text(
+                    "CHATBOT",
+                    style: GoogleFonts.breeSerif(
+                        textStyle:
+                            TextStyle(fontSize: 15, color: Colors.black87)),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    ));
   }
 }

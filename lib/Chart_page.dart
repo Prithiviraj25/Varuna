@@ -52,16 +52,17 @@ class _RealTimeChartState extends State<RealTimeChart> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(child:Scaffold(
         backgroundColor: Color(0xFFE4F1FF),
         appBar: AppBar(
           backgroundColor: Colors.blue.shade100,
-          title: Text(
-            "DEVICE VALUES",
-            style: GoogleFonts.roboto(
-                textStyle: TextStyle(color: Colors.black87),
-                fontWeight: FontWeight.w800),
-          ),
+          automaticallyImplyLeading: false,
+          title: Center(
+              child: Text("DEVICE DETAILS",
+                  style: GoogleFonts.breeSerif(
+                      textStyle: TextStyle(
+                          color: Color(0xDD000000),
+                          fontWeight: FontWeight.w800)))),
         ),
         body: Column(
           children: [
@@ -100,12 +101,12 @@ class _RealTimeChartState extends State<RealTimeChart> {
 
                     return ListTile(
                       leading: Text(sensorData.name,
-                          style: GoogleFonts.roboto(
+                          style: GoogleFonts.breeSerif(
                             textStyle: TextStyle(color: Colors.black87),
                             fontWeight: FontWeight.w800,
                           )),
                       title: Text("${sensorData.value}",
-                          style: GoogleFonts.roboto(
+                          style: GoogleFonts.breeSerif(
                               textStyle: TextStyle(color: Color(0xDD000000)),
                               fontWeight: FontWeight.w600)),
                     );
@@ -121,12 +122,12 @@ class _RealTimeChartState extends State<RealTimeChart> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text("Kindly Revisit to update values",
-                  style: GoogleFonts.roboto(
+                  style: GoogleFonts.breeSerif(
                       textStyle: TextStyle(color: Color(0xDD000000)),
                       fontWeight: FontWeight.w600)),
             )
           ],
-        ));
+        )));
   }
 
   List<charts.Series<SensorData, String>> _createChartData() {
