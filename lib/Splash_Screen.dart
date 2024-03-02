@@ -11,38 +11,30 @@ class splashscreen extends StatefulWidget {
 }
 
 class _splashscreenState extends State<splashscreen> {
+  var opacity = 1.0;
   @override
-  void initState(){
-    animator();
+  void initState() {
+    opacitymanager();
   }
-  var animate = false;
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: Stack(
-        children: [
-          AnimatedPositioned(
-              duration: Duration(microseconds: 2000),
-              child: Image.asset(
-                "assets/images/screen.jpeg",
-                height: (animate)?size.height:0,
-                width: size.width,
-              ))
-        ],
-      ),
+      body: Center(
+          child: AnimatedOpacity(
+        opacity: opacity,
+        duration: Duration(seconds: 3),
+        child: Image.asset("assets/images/screen.jpeg"),
+      )),
     );
-
   }
-  Future animator() async {
-    await Future.delayed(Duration(milliseconds: 1000));
+
+  void opacitymanager() async {
+    await Future.delayed(Duration(milliseconds: 1500));
     setState(() {
-      animate = true;
-    });
-    await Future.delayed(Duration(milliseconds: 3000));
-    setState(() {
-      animate =false;
+      opacity = 0;
     });
     await Future.delayed(Duration(milliseconds: 2000));
     setState(() {
@@ -50,6 +42,4 @@ class _splashscreenState extends State<splashscreen> {
           context, MaterialPageRoute(builder: (context) => IntroPage()));
     });
   }
-
-
 }

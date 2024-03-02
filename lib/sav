@@ -1,0 +1,28 @@
+ Expanded(
+                      child: ListView.separated(
+                          itemBuilder: (context, index) {
+                            final sensorData = chartData[index];
+                            print(sensorData.name);
+                            print(sensorData.value);
+
+                            return ListTile(
+                              leading: Text(sensorData.name,
+                                  style: GoogleFonts.breeSerif(
+                                    textStyle: TextStyle(color: Colors.black87),
+                                    fontWeight: FontWeight.w800,
+                                  )),
+                              title: Text("${sensorData.value}",
+                                  style: GoogleFonts.breeSerif(
+                                      textStyle:
+                                      TextStyle(color: Color(0xDD000000)),
+                                      fontWeight: FontWeight.w600)),
+                            );
+                          },
+                          itemCount: 9,
+                          separatorBuilder: (context, index) {
+                            return Divider(
+                              height: 20,
+                              thickness: 1,
+                            );
+                          }),
+                    )

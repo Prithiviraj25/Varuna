@@ -157,29 +157,28 @@ class _MyHomePageState extends State<MyHomePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(
-                width: size.width,
-                child: OutlinedButton.icon(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => RealTimeChart()));
-                  },
-                  style: OutlinedButton.styleFrom(
-                    backgroundColor: Color(0xFFBBDEFB),
-                  ),
-                  icon: Icon(
-                    Icons.device_hub_outlined,
-                    color: Colors.black87,
-                  ),
-                  label: Text(
-                    Device_names[0],
-                    style: GoogleFonts.breeSerif(
-                        textStyle:
-                            TextStyle(fontSize: 15, color: Colors.black87)),
-                  ),
-                ),
-              ),
+                  width: size.width,
+                  child: OutlinedButton.icon(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => RealTimeChart()));
+                    },
+                    style: OutlinedButton.styleFrom(
+                      backgroundColor: Color(0xFFBBDEFB),
+                    ),
+                    icon: Icon(
+                      Icons.device_hub_outlined,
+                      color: Colors.black87,
+                    ),
+                    label: Text(
+                      Device_names[0],
+                      style: GoogleFonts.breeSerif(
+                          textStyle:
+                              TextStyle(fontSize: 15, color: Colors.black87)),
+                    ),
+                  )),
               Text(
                 (output[0] == 0) ? "NOT POTABLE" : "POTABLE",
                 style: GoogleFonts.breeSerif(
